@@ -21,6 +21,7 @@ static int visual_attribs[] = {
     None
 };
 
+// FIXME
 int is_extension_supported(const char* extension) {
     const GLubyte *extensions = NULL;
     const GLubyte *start;
