@@ -16,6 +16,7 @@ int main(void) {
         glClearColor(1.f, 1.f, 1.f, 1.f);
 
         win_waitevents(win);
+        win_swapbuffers(win);
     }
 
     win_destroy(win);

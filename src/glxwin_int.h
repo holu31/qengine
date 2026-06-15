@@ -7,8 +7,6 @@
 struct glxwin {
     Display* dpy;
     Window handle; 
-    GLXWindow drawable;
-    XVisualInfo *vi;
     GLXContext ctx;
 };
 
