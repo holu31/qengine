@@ -7,7 +7,7 @@
 int main(void) {
     glxwin_t* win = win_create();
     if (win == NULL) {
-        printf("failed to create win\n");
+        fprintf(stderr, "failed to create win\n");
         return -1;
     }
 

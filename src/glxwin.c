@@ -56,8 +56,8 @@ XVisualInfo* glx_create_visualinfo(glxwin_t* win) {
     }
     printf("found %d framebuffer configs\n", fbcount);
 
-    int best_fbc_idx, worst_fbc_idx;
-    int best_num_samp, worst_num_samp;
+    int best_fbc_idx = -1, worst_fbc_idx = -1;
+    int best_num_samp = -1, worst_num_samp = -1;
     
     for (int i = 0; i < fbcount; i++) {
         XVisualInfo* vi = glXGetVisualFromFBConfig(win->dpy, fbc[i]);
@@ -81,20 +81,19 @@ XVisualInfo* glx_create_visualinfo(glxwin_t* win) {
     XVisualInfo* vi = glXGetVisualFromFBConfig(win->dpy, best_fbc);
     printf("visual info ID=0x%lx\n", vi->visualid);
 
+    XFree(fbc);
+
     return vi;
 }
 
-GLXContext glx_create_context(glxwin_t* win) {
-    /*GLXContext ctx = glXCreateContext(win->dpy, win->vi, 0, GL_FALSE);
+GLXContext glx_create_context(glxwin_t* win, XVisualInfo* vi) {
+    GLXContext ctx = glXCreateContext(win->dpy, vi, NULL, GL_TRUE);
     if (!ctx) {
         fprintf(stderr, "glx: cannot create context.\n");
         return 0;
     }
 
     return ctx;
-    */
-
-    return 0;
 }
 
 glxwin_t* win_create(void) {
@@ -118,25 +117,25 @@ glxwin_t* win_create(void) {
     win->handle = XCreateWindow(
         win->dpy,
         root,
-        0, 0, 800, 600,
+        0, 0, 800, 600, 0,
         vi->depth, 
-        CopyFromParent, CopyFromParent, CopyFromParent,
+        InputOutput, vi->visual,
         attrib_mask, &attrib
     );
-
-    XFree(vi);
 
     XMapWindow(win->dpy, win->handle);
     XFlush(win->dpy);
     
-    gl_init();
-
-    win->ctx = glx_create_context(win);
+    win->ctx = glx_create_context(win, vi);
     if (!win->ctx) {
         return NULL;
     }
 
     glXMakeCurrent(win->dpy, win->handle, win->ctx);
+
+    gl_init();
+
+    XFree(vi);
 
     return win;
 }
