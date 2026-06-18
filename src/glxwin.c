@@ -54,7 +54,7 @@ XVisualInfo* glx_create_visualinfo(glxwin_t* win) {
         fprintf(stderr, "glx: failed to choose a framebuffer config\n");
         return NULL;
     }
-    printf("found %d framebuffer configs\n", fbcount);
+    printf("glx: found %d framebuffer configs\n", fbcount);
 
     int best_fbc_idx = -1, worst_fbc_idx = -1;
     int best_num_samp = -1, worst_num_samp = -1;
@@ -66,7 +66,7 @@ XVisualInfo* glx_create_visualinfo(glxwin_t* win) {
             glXGetFBConfigAttrib(win->dpy, fbc[i], GLX_SAMPLE_BUFFERS, &samp_buf);
             glXGetFBConfigAttrib(win->dpy, fbc[i], GLX_SAMPLES, &samples);
 
-            if (best_fbc_idx < 0 || samp_buf && samples > best_num_samp) {
+                if (best_fbc_idx < 0 || samp_buf && samples > best_num_samp) {
                 best_fbc_idx = i, best_num_samp = samples;
             }
             if (worst_fbc_idx < 0 || !samp_buf || samples < worst_num_samp) {
@@ -79,7 +79,7 @@ XVisualInfo* glx_create_visualinfo(glxwin_t* win) {
     GLXFBConfig best_fbc = fbc[best_fbc_idx];
 
     XVisualInfo* vi = glXGetVisualFromFBConfig(win->dpy, best_fbc);
-    printf("visual info ID=0x%lx\n", vi->visualid);
+    printf("glx: visual info ID=0x%lx\n", vi->visualid);
 
     XFree(fbc);
 
@@ -90,7 +90,7 @@ GLXContext glx_create_context(glxwin_t* win, XVisualInfo* vi) {
     GLXContext ctx = glXCreateContext(win->dpy, vi, NULL, GL_TRUE);
     if (!ctx) {
         fprintf(stderr, "glx: cannot create context.\n");
-        return 0;
+        return NULL;
     }
 
     return ctx;
@@ -144,19 +144,14 @@ void win_swapbuffers(glxwin_t* win) {
     glXSwapBuffers(win->dpy, win->handle);
 }
 
-void win_waitevents(glxwin_t* win) {
-    XEvent event = {};
-    XNextEvent(win->dpy, &event);
+void win_pollevents(glxwin_t* win) {
+    XPending(win->dpy);
 
-    switch (event.type) {
-        case KeyRelease: {
-            XKeyReleasedEvent* keyevent = (XKeyReleasedEvent*)&event;
-            break;
-        }
-        case ClientMessage: {
+    while (QLength(win->dpy)) {
+        XEvent event = {};
+        XNextEvent(win->dpy, &event);
 
-            break;                    
-        }
+        XFlush(win->dpy);
     }
 }
 
