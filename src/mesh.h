@@ -11,6 +11,8 @@ typedef struct {
 
     uint32_t* inds;
     uint32_t ind_count;
+
+    uint32_t vao;
 } mesh_t;
 
 #endif // MESH_H

@@ -3,9 +3,8 @@
 #include <stdio.h>
 #include <X11/Xutil.h>
 
-#include "glxwin_int.h"
 #include "glxwin.h"
-#include "gl/gl_main.h"
+#include "gl_init.h"
 
 static int visual_attribs[] = {
     GLX_X_RENDERABLE,   True,
@@ -20,29 +19,6 @@ static int visual_attribs[] = {
     GLX_DOUBLEBUFFER,   True,
     None
 };
-
-int is_extension_supported(const char* ext) {
-    const GLubyte* exts = NULL;
-    const GLubyte* start;
-    GLubyte* where, *term;
-
-    where = (GLubyte*)strchr(ext, ' ');
-    if (where || *ext == '\0')
-       return 0;
-    exts = glGetString(GL_EXTENSIONS);
-    start = exts;
-    for (;;) {
-        where = (GLubyte*)strstr((const char*)start, ext);
-        if (!where)
-            break;
-        term = where + strlen(ext);
-        if (where == start || *(where - 1) == ' ')
-        if (*term == ' ' || *term == '\0')
-            return 1;
-        start = term;
-    }
-    return 0;
-}
 
 XVisualInfo* glx_create_visualinfo(glxwin_t* win) {
     int screen = DefaultScreen(win->dpy);

@@ -3,6 +3,7 @@
 #include <GL/glx.h>
 
 #include "glxwin.h"
+#include "gl_init.h"
 
 int main(void) {
     glxwin_t* win = win_create();
