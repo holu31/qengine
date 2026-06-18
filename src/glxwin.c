@@ -21,26 +21,25 @@ static int visual_attribs[] = {
     None
 };
 
-// FIXME
-int is_extension_supported(const char* extension) {
-    const GLubyte *extensions = NULL;
-    const GLubyte *start;
-    GLubyte *where, *terminator;
+int is_extension_supported(const char* ext) {
+    const GLubyte* exts = NULL;
+    const GLubyte* start;
+    GLubyte* where, *term;
 
-    where = (GLubyte *) strchr(extension, ' ');
-    if (where || *extension == '\0')
-        return 0;
-    extensions = glGetString(GL_EXTENSIONS);
-    start = extensions;
+    where = (GLubyte*)strchr(ext, ' ');
+    if (where || *ext == '\0')
+       return 0;
+    exts = glGetString(GL_EXTENSIONS);
+    start = exts;
     for (;;) {
-        where = (GLubyte *) strstr((const char *) start, extension);
+        where = (GLubyte*)strstr((const char*)start, ext);
         if (!where)
             break;
-        terminator = where + strlen(extension);
+        term = where + strlen(ext);
         if (where == start || *(where - 1) == ' ')
-        if (*terminator == ' ' || *terminator == '\0')
+        if (*term == ' ' || *term == '\0')
             return 1;
-        start = terminator;
+        start = term;
     }
     return 0;
 }
@@ -56,8 +55,8 @@ XVisualInfo* glx_create_visualinfo(glxwin_t* win) {
     }
     printf("glx: found %d framebuffer configs\n", fbcount);
 
-    int best_fbc_idx = -1, worst_fbc_idx = -1;
-    int best_num_samp = -1, worst_num_samp = -1;
+    int best_fbc_idx = -1;
+    int best_num_samp = -1;
     
     for (int i = 0; i < fbcount; i++) {
         XVisualInfo* vi = glXGetVisualFromFBConfig(win->dpy, fbc[i]);
@@ -66,12 +65,9 @@ XVisualInfo* glx_create_visualinfo(glxwin_t* win) {
             glXGetFBConfigAttrib(win->dpy, fbc[i], GLX_SAMPLE_BUFFERS, &samp_buf);
             glXGetFBConfigAttrib(win->dpy, fbc[i], GLX_SAMPLES, &samples);
 
-                if (best_fbc_idx < 0 || samp_buf && samples > best_num_samp) {
+            if (best_fbc_idx < 0 || (samp_buf && samples > best_num_samp)) {
                 best_fbc_idx = i, best_num_samp = samples;
-            }
-            if (worst_fbc_idx < 0 || !samp_buf || samples < worst_num_samp) {
-                worst_fbc_idx = i, worst_num_samp = samples;
-            }
+            } 
         }
         XFree(vi);
     }
@@ -98,6 +94,9 @@ GLXContext glx_create_context(glxwin_t* win, XVisualInfo* vi) {
 
 glxwin_t* win_create(void) {
     glxwin_t* win = malloc(sizeof(glxwin_t));
+    if (win == NULL) {
+        return NULL;
+    }
 
     win->dpy = XOpenDisplay(NULL);
     Window root = XDefaultRootWindow(win->dpy);

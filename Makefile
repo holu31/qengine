@@ -1,4 +1,4 @@
-CC = gcc
+CC = clang
 CFLAGS = -g -Wall -Wextra -std=c99 -O0 -Iinclude/
 LDLIBS = -lGL -lX11
 TARGET = game

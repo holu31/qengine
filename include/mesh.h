@@ -2,12 +2,15 @@
 #define MESH_H
 
 typedef struct {
-    float v[3];
-    int index;
+    float pos[3];
 } vertex_t;
 
 typedef struct {
-    vertex_t* verts;    
+    vertex_t* verts;
+    uint32_t vert_count;
+
+    uint32_t* inds;
+    uint32_t ind_count;
 } mesh_t;
 
 #endif // MESH_H
