@@ -1,5 +1,5 @@
-#ifndef GLXWIN_H
-#define GLXWIN_H
+#ifndef GLX_WIN_H
+#define GLX_WIN_H
 
 #include <X11/Xlib.h>
 #include <GL/glx.h>
@@ -15,4 +15,4 @@ void win_swapbuffers(glxwin_t* win);
 void win_pollevents(glxwin_t* win);
 void win_destroy(glxwin_t* win);
 
-#endif // GLXWIN_H
+#endif // GLX_WIN_H

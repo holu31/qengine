@@ -7,12 +7,20 @@ typedef struct {
 
 typedef struct {
     vertex_t* verts;
-    uint32_t vert_count;
+    size_t verts_count;
 
     uint32_t* inds;
-    uint32_t ind_count;
-
-    uint32_t vao;
+    size_t inds_count;
 } mesh_t;
+
+typedef struct {
+    uint32_t vao;
+    uint32_t vbo;
+} gl_mesh_t;
+
+mesh_t create_mesh(
+    vertex_t verts[], size_t verts_count,
+    uint32_t inds[], size_t inds_count
+)
 
 #endif // MESH_H

@@ -3,7 +3,7 @@ CFLAGS = -g -Wall -Wextra -std=c99 -O0 -Iinclude/
 LDLIBS = -lGL -lX11
 TARGET = game
 
-SRC = src/main.c src/glxwin.c src/gl_init.c src/mesh.c
+SRC = src/main.c src/mesh.c src/gl/glx_win.c src/gl/gl_init.c 
 OBJ = $(SRC:.c=.o)
 
 all: $(TARGET)

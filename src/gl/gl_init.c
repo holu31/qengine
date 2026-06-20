@@ -48,7 +48,7 @@ void* gl_get_addr(const char* name) {
     return p;
 }
 
-int gl_init(void) {
+void gl_init(void) {
     LOAD_GL(PFNGLCREATESHADERPROC, glCreateShader);
     LOAD_GL(PFNGLSHADERSOURCEPROC, glShaderSource);
     LOAD_GL(PFNGLCOMPILESHADERPROC, glCompileShader);
@@ -61,6 +61,4 @@ int gl_init(void) {
     LOAD_GL(PFNGLGENVERTEXARRAYSPROC, glGenVertexArrays);
     LOAD_GL(PFNGLBINDVERTEXARRAYPROC, glBindVertexArray);
     LOAD_GL(PFNGLUSEPROGRAMPROC, glUseProgram); 
-
-    return 0;
 }

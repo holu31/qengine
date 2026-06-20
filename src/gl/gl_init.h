@@ -23,6 +23,6 @@ extern PFNGLUSEPROGRAMPROC glUseProgram;
 int is_extension_supported(const char* ext);
 void* gl_get_addr(const char* name);
 
-int gl_init(void);
+void gl_init(void);
 
 #endif // GL_MAIN_H

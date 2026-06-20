@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <X11/Xutil.h>
 
-#include "glxwin.h"
+#include "glx_win.h"
 #include "gl_init.h"
 
 static int visual_attribs[] = {
@@ -107,8 +107,6 @@ glxwin_t* win_create(void) {
     }
 
     glXMakeCurrent(win->dpy, win->handle, win->ctx);
-
-    gl_init();
 
     XFree(vi);
 
