@@ -5,13 +5,40 @@
 #include <GL/glx.h>
 
 #include "gl_init.h"
+#include "mesh.h"
 #include "mathlib.h"
 
 void gl_draw_init(void);
+void gl_push_mesh(mesh_t mesh);
+void gl_flush(void);
 
-void cl_main(void) {}
+void cl_main(void) {
+    mesh_t mesh;
+    mesh.verts_count = 3;
+    mesh.verts = malloc(sizeof(vertex_t) * 3);
+    if (mesh.verts == NULL) {
+        fprintf(stderr, "failed\n");
+        return;
+    } 
 
-void cl_loop(void) {}
+    mesh.verts[0].pos[0] = -1.0f;
+    mesh.verts[0].pos[1] = -1.0f;
+    mesh.verts[0].pos[2] = 0.0f;
+
+    mesh.verts[1].pos[0] = 1.0f;
+    mesh.verts[1].pos[1] = -1.0f;
+    mesh.verts[1].pos[2] = 0.0f;
+
+    mesh.verts[2].pos[0] = 0.0f;
+    mesh.verts[2].pos[1] = 1.0f;
+    mesh.verts[2].pos[2] = 0.0f;
+
+    gl_push_mesh(mesh);
+}
+
+void cl_loop(void) {
+    gl_flush();
+}
 
 #ifdef __linux__
 
