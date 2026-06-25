@@ -20,7 +20,6 @@ extern PFNGLGENVERTEXARRAYSPROC glGenVertexArrays;
 extern PFNGLBINDVERTEXARRAYPROC glBindVertexArray;
 extern PFNGLUSEPROGRAMPROC glUseProgram;
 
-int is_extension_supported(const char* ext);
 void* gl_get_addr(const char* name);
 
 void gl_init(void);

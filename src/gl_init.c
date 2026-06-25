@@ -16,29 +16,6 @@ PFNGLGENVERTEXARRAYSPROC glGenVertexArrays;
 PFNGLBINDVERTEXARRAYPROC glBindVertexArray;
 PFNGLUSEPROGRAMPROC glUseProgram;
 
-int is_extension_supported(const char* ext) {
-    const GLubyte* exts = NULL;
-    const GLubyte* start;
-    GLubyte* where, *term;
-
-    where = (GLubyte*)strchr(ext, ' ');
-    if (where || *ext == '\0')
-       return 0;
-    exts = glGetString(GL_EXTENSIONS);
-    start = exts;
-    for (;;) {
-        where = (GLubyte*)strstr((const char*)start, ext);
-        if (!where)
-            break;
-        term = where + strlen(ext);
-        if (where == start || *(where - 1) == ' ')
-        if (*term == ' ' || *term == '\0')
-            return 1;
-        start = term;
-    }
-    return 0;
-}
-
 void* gl_get_addr(const char* name) {
     void* p = (void*)glXGetProcAddressARB((GLubyte*)name);
     if (!p) {
