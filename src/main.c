@@ -12,10 +12,11 @@ void gl_draw_init(void);
 void gl_push_mesh(mesh_t mesh);
 void gl_flush(void);
 
+mesh_t mesh;
+
 void cl_main(void) {
-    mesh_t mesh;
-    mesh.verts_count = 3;
-    mesh.verts = malloc(sizeof(vertex_t) * 3);
+    mesh.verts_count = 4;
+    mesh.verts = malloc(sizeof(vertex_t) * 4);
     if (mesh.verts == NULL) {
         fprintf(stderr, "failed\n");
         return;
@@ -25,18 +26,44 @@ void cl_main(void) {
     mesh.verts[0].pos[1] = -1.0f;
     mesh.verts[0].pos[2] = 0.0f;
 
-    mesh.verts[1].pos[0] = 1.0f;
+    mesh.verts[1].pos[0] = 0.0f;
     mesh.verts[1].pos[1] = -1.0f;
-    mesh.verts[1].pos[2] = 0.0f;
+    mesh.verts[1].pos[2] = 1.0f;
 
-    mesh.verts[2].pos[0] = 0.0f;
-    mesh.verts[2].pos[1] = 1.0f;
+    mesh.verts[2].pos[0] = 1.0f;
+    mesh.verts[2].pos[1] = -1.0f;
     mesh.verts[2].pos[2] = 0.0f;
 
-    gl_push_mesh(mesh);
+    mesh.verts[3].pos[0] = 0.0f;
+    mesh.verts[3].pos[1] = 1.0f;
+    mesh.verts[3].pos[2] = 0.0f;
+
+    mesh.inds_count = 12;
+    mesh.inds = malloc(sizeof(uint32_t) * 12);
+    if (mesh.inds == NULL) {
+        fprintf(stderr, "failed\n");
+        return;
+    }
+
+    mesh.inds[0] = 0;
+    mesh.inds[1] = 3;
+    mesh.inds[2] = 1;
+
+    mesh.inds[3] = 1;
+    mesh.inds[4] = 3;
+    mesh.inds[5] = 2;
+
+    mesh.inds[6] = 2;
+    mesh.inds[7] = 3;
+    mesh.inds[8] = 0;
+
+    mesh.inds[9] = 0;
+    mesh.inds[10] = 1;
+    mesh.inds[11] = 2;
 }
 
 void cl_loop(void) {
+    gl_push_mesh(mesh);
     gl_flush();
 }
 
